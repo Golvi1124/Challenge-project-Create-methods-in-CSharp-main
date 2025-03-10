@@ -1,4 +1,13 @@
-﻿using System;
+﻿/* 
+The code doesn't call the methods correctly to make the game playable. The following features are missing:
+    - Code to determine if the player has consumed the food displayed.
+    - Code to determine if the food consumed should freeze player movement.
+    - Code to determine if the food consumed should increase player movement.
+    - Code to increase movement speed.
+    - Code to redisplay the food after it's consumed by the player.
+    - Code to terminate execution if an unsupported key is entered.
+    - Code to terminate execution if the terminal was resized.
+*/
 
 Random random = new Random();
 Console.CursorVisible = false;
@@ -32,10 +41,10 @@ while (!shouldExit)
     {
         Console.Clear();
         Console.WriteLine("Console was resized. Program exiting");
-        return;
+        shouldExit = true;
     }
     else
-    {   
+    {
         if (ShouldFreeze())
         {
             FreezePlayer();
@@ -54,7 +63,6 @@ while (!shouldExit)
             ShowFood();
         }
     }
-    Move();
 }
 
 bool ShouldRun()
@@ -109,7 +117,7 @@ void FreezePlayer()
 }
 
 // Reads directional input from the Console and moves the player
-void Move(int speed = 1, bool otherKeysExit = false)
+void Move(int speed = 1, bool otherKeysExit = false)// function assumes non-movement keys won’t cause an exit unless explicitly handled inside the function.
 {
     int lastX = playerX;
     int lastY = playerY;
@@ -156,11 +164,6 @@ void Move(int speed = 1, bool otherKeysExit = false)
     playerX = Math.Clamp(playerX, 0, width - 1); // Uses Math.Clamp() for boundary control: Keeps the player within valid screen boundaries.
     playerY = Math.Clamp(playerY, 0, height - 1);
 
-    /* Old one
-
-        playerX = (playerX < 0) ? 0 : (playerX >= width ? width : playerX);
-        playerY = (playerY < 0) ? 0 : (playerY >= height ? height : playerY); */
-
     // Draw the player at the new location
     Console.SetCursorPosition(playerX, playerY);
     Console.Write(player);
@@ -174,14 +177,3 @@ void InitializeGame()
     Console.SetCursorPosition(0, 0);
     Console.Write(player);
 }
-
-/* 
-The code doesn't call the methods correctly to make the game playable. The following features are missing:
-    - Code to determine if the player has consumed the food displayed.
-    - Code to determine if the food consumed should freeze player movement.
-    - Code to determine if the food consumed should increase player movement.
-    - Code to increase movement speed.
-    - Code to redisplay the food after it's consumed by the player.
-    - Code to terminate execution if an unsupported key is entered.
-    - Code to terminate execution if the terminal was resized.
-*/
