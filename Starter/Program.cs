@@ -24,6 +24,7 @@ string player = states[0];
 // Index of the current food
 int food = 0;
 
+
 InitializeGame();
 while (!shouldExit)
 {
@@ -33,7 +34,42 @@ while (!shouldExit)
         Console.WriteLine("Console was resized. Program exiting");
         return;
     }
+    else
+    {   
+        if (ShouldFreeze())
+        {
+            FreezePlayer();
+        }
+        else if (ShouldRun())
+        {
+            Move(3, false);
+        }
+        else
+        {
+            Move(otherKeysExit: false);
+        }
+        if (GotFood())
+        {
+            ChangePlayer();
+            ShowFood();
+        }
+    }
     Move();
+}
+
+bool ShouldRun()
+{
+    return player.Equals(states[1]);
+}
+
+bool ShouldFreeze()
+{
+    return player.Equals(states[2]);
+}
+
+bool GotFood()
+{
+    return playerX == foodX && playerY == foodY;
 }
 
 // Returns true if the Terminal was resized 
@@ -73,7 +109,7 @@ void FreezePlayer()
 }
 
 // Reads directional input from the Console and moves the player
-void Move()
+void Move(int speed = 1, bool otherKeysExit = false)
 {
     int lastX = playerX;
     int lastY = playerY;
@@ -148,4 +184,4 @@ The code doesn't call the methods correctly to make the game playable. The follo
     - Code to redisplay the food after it's consumed by the player.
     - Code to terminate execution if an unsupported key is entered.
     - Code to terminate execution if the terminal was resized.
- */
+*/
